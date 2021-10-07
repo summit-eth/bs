@@ -138,10 +138,14 @@ window.App = new Vue({
         console.log("Wallet connected");
         /* check if on bsc */
         (async function() {
-            if(await self.web3.eth.getChainId() != await self.conn.eth.getChainId()) {
-                self.notify("Please switch to the BSC Network", "The current wallet is not connected to the Binance Smart Chain Mainnet", 24e18);
-                self.fetchInfo();
-            } else {
+            try {
+                if(await self.web3.eth.getChainId() != await self.conn.eth.getChainId()) {
+                    self.notify("Please switch to the BSC Network", "The current wallet is not connected to the Binance Smart Chain Mainnet", 24e18);
+                    self.fetchInfo();
+                } else {
+                    self.fetchInfo();
+                }
+            } catch(e) {
                 self.fetchInfo();
             }
         })();
