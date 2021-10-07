@@ -35,6 +35,7 @@ let cfg = {
                     self.web3 = new Web3(ethereum);
                     try {
                         /* request account access */
+                        await ethereum.enable();
                         await ethereum.request({ method: 'eth_accounts' });
                         if(isMetaMaskInstalled()) {
                             window.ethereum.on('accountsChanged', accounts => {
@@ -197,6 +198,7 @@ window.App = new Vue({
                         self.web3 = new Web3(ethereum);
                         try {
                             /* request account access */
+                            await ethereum.enable();
                             await ethereum.request({ method: 'eth_accounts' });
                             if(isMetaMaskInstalled()) {
                                 window.ethereum.on('accountsChanged', accounts => {
