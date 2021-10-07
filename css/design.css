@@ -456,6 +456,7 @@ body {
 
 .mainInfo:not(:first-child) {
     background: linear-gradient(37deg, #852275, #2e0c30);
+    box-shadow: inset 0px 0px 20px -10px #000;
 }
 
 .mainInfo > div,
@@ -555,6 +556,7 @@ body {
     padding: 20px;
     border-radius: 8px;
     margin-right: 20px;
+    box-shadow: 0px 0px 10px -5px #000;
 }
 
 .apr > div:last-child {
@@ -868,6 +870,10 @@ div > sub {
 
 @media screen and (max-width: 360px) {
     
+    #stake > div, #unstake > div, #content, #footer {
+        zoom: 0.8;
+    }
+    
     .notif {
         top: 0px;
         left: 0px;
@@ -886,6 +892,15 @@ div > sub {
     }
 
 }
+@media only screen and (max-width: 600px) {
+    
+    
+    #unstake > div > div > div:nth-child(1) {
+        display: none;
+    }
+
+}
+
 @media only screen and (max-width: 765px) {
     
     .wrapper {
@@ -893,11 +908,12 @@ div > sub {
     }
     
     #nav {
-        height: 80px;
+        height: 90px;
         padding: 20px 0px;
     }
     
     #nav a {
+        margin-bottom: 0px;
     }
     
     #nav img {

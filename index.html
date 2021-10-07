@@ -101,7 +101,7 @@
                         <div>{{format(bnbstation.claimed)}}<sub>bnb</sub></div>
                     </div>
                     <div>
-                        <div>rewarded referrals</div>
+                        <div>total referral bonus</div>
                         <div>{{format(bnbstation.referrals)}}<sub>bnb</sub></div>
                     </div>
                 </div>
@@ -128,19 +128,19 @@
                 </div>
                 <div>
                     <div>
-                        <div>available rewards</div>
+                        <div>available bonus</div>
                         <div>{{format(user.referrals.bonus, 5)}}<sub>bnb</sub></div>
                     </div>
                     <div>
-                        <div>claimed rewards</div>
+                        <div>claimed bonus</div>
                         <div>{{format(user.referrals.totalBonus-user.referrals.bonus, 5)}}<sub>bnb</sub></div>
                     </div>
                     <div>
-                        <div>total rewards</div>
+                        <div>total bonus</div>
                         <div>{{format(user.referrals.totalBonus, 5)}}<sub>bnb</sub></div>
                     </div>
                 </div>
-                <button @click="_claimRef">claim rewards</button>
+                <button @click="_claimRef">claim bonus</button>
             </div>
         </div>
     </div>
@@ -171,6 +171,7 @@
         <div>
             <span class="btn-close" @click="toggleStake"><svg viewBox="0 0 24 24" width="24" height="24" style="fill: currentcolor;"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.293 6.293a1 1 0 011.414 0L12 10.586l4.293-4.293a1 1 0 111.414 1.414L13.414 12l4.293 4.293a1 1 0 01-1.414 1.414L12 13.414l-4.293 4.293a1 1 0 01-1.414-1.414L10.586 12 6.293 7.707a1 1 0 010-1.414z" fill=""></path></svg></span>
             <h2>Stake</h2>
+            <p v-if="public==1">Wallet not connected!</p>
             <div>
                 <div>
                     <div>amount</div>
@@ -190,9 +191,10 @@
         <div>
             <span class="btn-close" @click="toggleUnstake"><svg viewBox="0 0 24 24" width="24" height="24" style="fill: currentcolor;"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.293 6.293a1 1 0 011.414 0L12 10.586l4.293-4.293a1 1 0 111.414 1.414L13.414 12l4.293 4.293a1 1 0 01-1.414 1.414L12 13.414l-4.293 4.293a1 1 0 01-1.414-1.414L10.586 12 6.293 7.707a1 1 0 010-1.414z" fill=""></path></svg></span>
             <h2>Unstake</h2>
-            <p v-if="user.stakes.length == 0">Loading...</p>
+            <p v-if="public==1">Wallet not connected!</p>
+            <p v-if="user.stakes.length == 0 && public == 0">Loading...</p>
             <p v-if="user.stakes.length > 0">Red = 30% penalty when unstaking.</p>
-            <p v-if="user.stakes.length > 0">Please wait 15 days prior to unstaking to avoid penalties.</p>
+            <p v-if="user.stakes.length > 0">15 days cooldown to remove penalty (360:00:00)</p>
             <br>
             <div v-if="user.stakes.length > 0">
                 <div>
@@ -202,7 +204,7 @@
                     <div v-for="(stake, index) in user.stakes" :class="{'pen':stake.active==true&&stake.penalty==1}"><span v-if="stake.active && stake.penalty==1">{{countdown(stake.end).hours}}:{{countdown(stake.end).minutes}}:{{countdown(stake.end).seconds}}<sup>{{stake.start}}</sup></span></div>
                 </div>
                 <div>
-                    <div v-for="(stake, index) in user.stakes" :class="{'pen':stake.active==true&&stake.penalty==1}">{{stake.amount}}<sub>bnb</sub></div>
+                    <div v-for="(stake, index) in user.stakes" :class="{'pen':stake.active==true&&stake.penalty==1}">{{format(stake.amount)}}<sub>bnb</sub></div>
                 </div>
                 <div>
                     <div v-for="(stake, index) in user.stakes" :class="{'pen':stake.active==true&&stake.penalty==1}"><button v-if="stake.active==true" @click="_unstake(index)">unstake</button><div v-else>UNSTAKED</div></div>

@@ -283,7 +283,8 @@ window.App = new Vue({
 		},
         format(val, dec=0) {
             if(isNaN(val)) return "...";
-            if(dec == 0) dec = (val >= 0.0001) ? (val >= 0.01) ? 2 : 4 : (val <= 0) ? 2 : 8;
+            if(dec == 0) dec = ((val + "").split(".").length > 1 ? (((val + "").split(".")[1].length > 8) ? (val > 1) ? 4 : 8 : ((val + "").split(".")[1].length > 4) ? 4 : 2 ) : (2));
+            /*if(dec == 0) dec = (val >= 0.0001) ? (val >= 0.01) ? (val >= 1 ? ((val + "").split(".").length > 1 ? (((val + "").split(".")[1].length > 4) ? 4 : 2 ) : (2)) : 2 ) : 4 : (val <= 0) ? 2 : 8;*/
             return (Math.round(val * 10**dec)/10**dec).toFixed(dec);
         },
         prettifyAmount(n) {
@@ -445,6 +446,7 @@ window.App = new Vue({
             let amount = self.val.stake;
             if(amount < 0.05 || amount > self.user.balance) return;
             let contract = new self.web3.eth.Contract(self.contract.abi, self.contract.address);
+            self.notify("Please Confirm Transaction");
             /*contract.methods.stake(self.user.ref).estimateGas({
                 from: self.user.address,
                 value: self.toWei(amount)
@@ -475,6 +477,7 @@ window.App = new Vue({
             let self = this;
             if(self.user.stakes[i].active == false) return;
             let contract = new self.web3.eth.Contract(self.contract.abi, self.contract.address);
+            self.notify("Please Confirm Transaction");
             contract.methods.unstake(i).send({
                 from: self.user.address
             }, (e, res) => {
@@ -493,6 +496,7 @@ window.App = new Vue({
             let self = this;
             if(self.user.claimable <= 0) return;
             let contract = new self.web3.eth.Contract(self.contract.abi, self.contract.address);
+            self.notify("Please Confirm Transaction");
             contract.methods.claim().send({
                 from: self.user.address
             }, (e, res) => {
@@ -513,6 +517,7 @@ window.App = new Vue({
             let self = this;
             if(self.user.referrals.bonus <= 0) return;
             let contract = new self.web3.eth.Contract(self.contract.abi, self.contract.address);
+            self.notify("Please Confirm Transaction");
             contract.methods.claimReferral().send({
                 from: self.user.address
             }, (e, res) => {
